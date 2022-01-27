@@ -1,0 +1,8 @@
+#map {
+  margin-left: 15vw;
+  height: 70vh;
+  width: 70vw;
+  overflow: hidden;
+  border:1px solid black;
+
+}
