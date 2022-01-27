@@ -1,8 +1,141 @@
-#map {
+
+#outermap{
+  position: relative;
   margin-left: 15vw;
+  height: 71vh;
+  width: 71vw;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 2%;
+  animation: rotate 1.5s linear infinite;
+  padding-top: 10px;
+  opacity: 0.6;
+}
+
+#outermap span {
+  position: absolute;
+  margin-left: 15vw;
+  height: 71vh;
+  width: 71vw;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  order-radius: 2%;
+}
+
+span:nth-child(1) {
+  filter: blur(5px);
+}
+
+span:nth-child(2) {
+  filter: blur(10px);
+}
+
+span:nth-child(3) {
+  filter: blur(25px);
+}
+
+span:nth-child(4) {
+  filter: blur(150px);
+}
+#map {
+  margin:auto;
+  z-index: 2;
+  opacity: 1 ;
   height: 70vh;
   width: 70vw;
   overflow: hidden;
   border:1px solid black;
+  border-radius: 2%;
+  animation: fade_in 2s ease 0s 1 normal none;
 
+
+}
+
+#web_header{
+  width: 100%;
+  background-color: #1d2b3b;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+#web_header img {
+  margin-top: 5px;
+  width: 30%;
+  margin-left: 35%;
+}
+
+#forecast_container{
+  width: 95%;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0);
+  height: 30%;
+  display:flex;
+  flex-direction: column;
+
+
+}
+#forecasts {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+#timezone{
+
+margin:auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  background: white;
+  width: 90%;
+  border-radius: 1%;
+}
+
+#forecast_item{
+
+  width: 20%;
+  margin: auto;
+  margin-left:2px;
+  margin-right:2px;
+  background-color: #ffb0b0;
+  height: auto;
+  border-radius: 6%;
+
+
+}
+#row{
+  display: flex;
+  text-align:center;
+  justify-content: center;
+
+
+}
+
+#row h1{
+  margin-left: 5px;
+  margin-right: 5px;
+  font-family: 'Dosis', sans-serif;
+  font-size:medium;
+}
+
+#row #heading{
+
+  font-size:x-large;
+}
+
+
+@keyframes fade_in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
