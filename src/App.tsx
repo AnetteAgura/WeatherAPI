@@ -15,6 +15,7 @@ type Coordinate = {
 export default function App(){
 
     const [weatherData, setWeatherData] : any = useState([]);
+    // userPosition isn't updating for map centering :(
     const [userPosition, setUserPosition] = useState<Coordinate>({latitude: 58.3780, longitude: 26.7290});
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export default function App(){
             const {latitude, longitude} = position.coords;
             setUserPosition({latitude, longitude});
 
-            fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=38cd7ebc4d661b9be1f9bde599415364&units=metric`)
+            fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
                 .then(res => res.json())
                 .then(data => {
                     setWeatherData(data)
@@ -39,7 +40,14 @@ export default function App(){
             click(e: LeafletMouseEvent) {
                 let lat = e.latlng.lat
                 let lng = e.latlng.lng
-                fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=38cd7ebc4d661b9be1f9bde599415364&units=metric`)
+
+                // For updating the userPosition a little so the Marker would move
+                setUserPosition({
+                    latitude: e.latlng.lat,
+                    longitude: e.latlng.lng
+                });
+
+                fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${process.env.REACT_APP_API_KEY}&units=metric`)
                     .then(res => res.json())
                     .then(data => {
                         setWeatherData(data)
@@ -56,6 +64,7 @@ export default function App(){
         )
     }
 
+    // In a weird way the Marker position is updating with userPosition but centering is not working
     return(<MapContainer center={[userPosition.latitude, userPosition.longitude]} zoom={9} scrollWheelZoom={true} id={"map"}>
 
         <Marker position={[userPosition.latitude, userPosition.longitude]}/>
