@@ -10,18 +10,45 @@ interface IWeatherData {
   list: [];
 }
 
-export type WeatherData = {
-  temp_f: number;
-  temp_c: number;
-  weather: string;
-  icon: string;
-};
+interface ILocation {
+    latitude: number;
+    longitude: number;
+}
 
 export default function App(){
 
-  //const [weatherData, setWeatherData] = useState<IWeatherData>();
+    const [weatherData, setWeatherData] = useState<IWeatherData>();
     const [initialPosition, setInitialPosition] = useState<[number, number]>([58.3780, 26.7290]);
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([58.3780, 26.7290]);
+
+    const Markers = () => {
+
+      const map = useMapEvents({
+          click(e) {
+              setInitialPosition([
+                  e.latlng.lat,
+                  e.latlng.lng
+
+              ]);
+              GetWeather();
+              },
+        });
+
+      return ( initialPosition ?
+              <Marker
+              key={initialPosition[1]}
+              position={initialPosition}
+              interactive={false}
+              /> : null
+      )}
+    const GetWeather = () => {
+        fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${initialPosition[0]}&lon=${initialPosition[1]}&APPID=a874d3d875a1b67b607feaa88782161d&units=metric`)
+            .then(res => res.json())
+            .then(result => {
+                setWeatherData(result)
+                console.log(result);
+            });
+
+    }
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -29,31 +56,13 @@ export default function App(){
             setInitialPosition([latitude, longitude]);
 
         });
-    }, []);
-
-    const Markers = () => {
-
-      const map = useMapEvents({
-          click(e) {                                
-              setSelectedPosition([
-                  e.latlng.lat,
-                  e.latlng.lng
-              ]);
-              },
-        });
-      return ( selectedPosition ?
-              <Marker
-              key={selectedPosition[0]}
-              position={selectedPosition}
-              interactive={false}
-              /> :null
-      )}
+    }, [initialPosition]);
 
        return<MapContainer center={initialPosition} zoom={13} scrollWheelZoom={true} id={"map"}>
 
            <Markers />
 
-           <Marker position={selectedPosition || initialPosition}/>
+           <Marker position={initialPosition}/>
 
            <TileLayer
                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
